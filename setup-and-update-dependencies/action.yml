@@ -1,0 +1,24 @@
+name: 'Setup Java and update dependencies'
+description: 'Setup Java SDK, fetch and cache packages dependencies.'
+
+inputs:
+  java-version:
+    default: '17'
+    description: 'Java Version'
+  distribution:
+    default: 'corretto'
+    description: 'Java Distribution'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: ${{ inputs.distribution }}
+        cache: 'maven'
+
+    - name: Update maven dependencies
+      run: ./mvnw --batch-mode --fail-fast dependency:resolve
+      shell: bash
