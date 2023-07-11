@@ -2,18 +2,21 @@
 
 A collection of GitHub actions for Java projects.
 
-## Example Playbook
+## Setup Java and Update Dependencies
+This action will set up the Java SDK and initialize the cache for Maven dependencies. It will then install or update all dependencies.
+
+### Example
 
 ```yaml
-  - name: Build code
-    uses: aboutbits/github-actions-java/xxx@v1
-    with:
-      xxx-version: ${{ env.NODE_VERSION }}
+  - name: Checkout source code
+    uses: actions/checkout@v3
+
+  - uses: aboutbits/github-actions-java/setup-java-and-update-dependencies
 ```
 
 ## Versioning
 
-In order to have a verioning in place and working, create leightweight tags that point to the appropriate minor release versions.
+In order to have a versioning in place and working, create lightweight tags that point to the appropriate minor release versions.
 
 Creating a new minor release:
 
