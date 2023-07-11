@@ -11,7 +11,7 @@ This action will set up the Java SDK and initialize the cache for Maven dependen
   - name: Checkout source code
     uses: actions/checkout@v3
 
-  - uses: aboutbits/github-actions-java/setup-java-and-update-dependencies
+  - uses: aboutbits/github-actions-java/setup-java-and-update-dependencies@v1
 ```
 
 ## Versioning
