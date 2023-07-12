@@ -2,17 +2,16 @@
 
 A collection of GitHub actions for Java projects.
 
-## Setup Java and Update Dependencies
+## Setup Java and Install Dependencies
 
-This action will set up the Java SDK and initialize the cache for Maven dependencies. It will then install or update all dependencies.
+This action will set up the Java SDK and install all dependencies.
 
 ### Example
 
 ```yaml
-  - name: Checkout source code
-    uses: actions/checkout@v3
+  - uses: actions/checkout@v3
 
-  - uses: aboutbits/github-actions-java/setup-and-update-dependencies@v1
+  - uses: aboutbits/github-actions-java/setup-and-install@v1
 ```
 
 ## Versioning
