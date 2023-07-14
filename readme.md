@@ -4,13 +4,11 @@ A collection of GitHub actions for Java projects.
 
 ## Actions
 
-### Setup Java and Update Dependencies
-
-### Setup Node and Install Dependencies
+### Setup Java and Install Dependencies
 
 This action will set up the Java SDK and install all dependencies.
 
-Example:
+#### Example:
 
 ```yaml
   - uses: actions/checkout@v3
@@ -20,12 +18,13 @@ Example:
 
 #### Inputs
 
-Following inputs can be used as `step.with` keys
+The following inputs can be used as `step.with` keys:
 
-| Name                 | Required/Default | Description         |
-|----------------------|------------------|---------------------|
-| `java-version`       | `17`             | Java Version        |
-| `distribution`       | `corretto`       | Java Distribution   |
+| Name                   | Required/Default | Description               |
+|------------------------|------------------|---------------------------|
+| `working-directory`    | `.`              | The working directory     |
+| `java-version`         | `17`             | Java Version              |
+| `distribution`         | `corretto`       | Java Distribution         |
 
 
 ## Versioning
