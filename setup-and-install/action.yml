@@ -1,10 +1,9 @@
 name: 'Setup Java and install dependencies'
-description: 'Setup Java SDK, fetch and cache packages dependencies.'
+description: 'Setup Java SDK, fetch and cache packages dependencies'
 
 inputs:
   working-directory:
     description: 'The working directory'
-    required: false
     default: '.'
   java-version:
     default: '17'

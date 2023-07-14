@@ -4,17 +4,28 @@ A collection of GitHub actions for Java projects.
 
 ## Actions
 
-### Setup Node and Install Dependencies
+### Setup Java and Install Dependencies
 
 This action will set up the Java SDK and install all dependencies.
 
-Example:
+#### Example:
 
 ```yaml
   - uses: actions/checkout@v3
 
   - uses: aboutbits/github-actions-java/setup-and-install@v1
 ```
+
+#### Inputs
+
+The following inputs can be used as `step.with` keys:
+
+| Name                   | Required/Default | Description               |
+|------------------------|------------------|---------------------------|
+| `working-directory`    | `.`              | The working directory     |
+| `java-version`         | `17`             | Java Version              |
+| `distribution`         | `corretto`       | Java Distribution         |
+
 
 ## Versioning
 
