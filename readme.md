@@ -11,8 +11,6 @@ This action will set up the Java SDK and install all dependencies.
 #### Example:
 
 ```yaml
-  - uses: actions/checkout@v3
-
   - uses: aboutbits/github-actions-java/setup-and-install@v1
 ```
 
