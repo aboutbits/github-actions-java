@@ -1,0 +1,23 @@
+name: 'Setup Java'
+description: 'Setup Java SDK'
+
+inputs:
+  working-directory:
+    description: 'The working directory'
+    default: '.'
+  java-version:
+    default: '17'
+    description: 'Java Version'
+  distribution:
+    default: 'corretto'
+    description: 'Java Distribution'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: ${{ inputs.distribution }}
+        cache: 'maven'
