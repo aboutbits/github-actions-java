@@ -21,7 +21,7 @@ The following inputs can be used as `step.with` keys:
 | Name                   | Required/Default | Description               |
 |------------------------|------------------|---------------------------|
 | `working-directory`    | `.`              | The working directory     |
-| `java-version`         | `17`             | Java Version              |
+| `java-version`         | `21`             | Java Version              |
 | `distribution`         | `corretto`       | Java Distribution         |
 
 ### Setup Java and Install Dependencies
@@ -41,7 +41,7 @@ The following inputs can be used as `step.with` keys:
 | Name                   | Required/Default | Description               |
 |------------------------|------------------|---------------------------|
 | `working-directory`    | `.`              | The working directory     |
-| `java-version`         | `17`             | Java Version              |
+| `java-version`         | `21`             | Java Version              |
 | `distribution`         | `corretto`       | Java Distribution         |
 
 
@@ -52,16 +52,16 @@ In order to have a versioning in place and working, create lightweight tags that
 Creating a new minor release:
 
 ```bash
-git tag v1
+git tag v2
 git push --tags
 ```
 
 Replacing an already existing minor release:
 
 ```bash
-git tag -d v1
-git push origin :refs/tags/v1
-git tag v1
+git tag -d v2
+git push origin :refs/tags/v2
+git tag v2
 git push --tags
 ```
 

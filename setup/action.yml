@@ -6,7 +6,7 @@ inputs:
     description: 'The working directory'
     default: '.'
   java-version:
-    default: '17'
+    default: '21'
     description: 'Java Version'
   distribution:
     default: 'corretto'
@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: Set up JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: ${{ inputs.java-version }}
         distribution: ${{ inputs.distribution }}
