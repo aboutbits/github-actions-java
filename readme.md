@@ -11,7 +11,7 @@ This action will set up the Java SDK.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup@v1
+  - uses: aboutbits/github-actions-java/setup@v2
 ```
 
 #### Inputs
@@ -31,7 +31,7 @@ This action will set up the Java SDK and install all dependencies.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup-and-install@v1
+  - uses: aboutbits/github-actions-java/setup-and-install@v2
 ```
 
 #### Inputs
