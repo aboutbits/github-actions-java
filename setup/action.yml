@@ -13,23 +13,23 @@ inputs:
     description: 'Java Distribution'
   cache:
     default: 'true'
-    description: 'Enable Maven dependency caching'
+    description: 'Enable Maven dependency caching.'
   cache-name:
     default: 'aboutbits-setup-java'
     description: 'Cache name. Caches with the same name will share their contents.'
 
 outputs:
   distribution:
-    description: 'Distribution of Java that has been installed'
+    description: 'Distribution of Java that has been installed.'
     value: ${{ steps.setup-java.outputs.distribution }}
   version:
-    description: 'Actual version of the java environment that has been installed'
+    description: 'Actual version of the java environment that has been installed.'
     value: ${{ steps.setup-java.outputs.version }}
   path:
-    description: 'Path to where the java environment has been installed (same as $JAVA_HOME)'
+    description: 'Path to where the java environment has been installed (same as $JAVA_HOME).'
     value: ${{ steps.setup-java.outputs.path }}
   cache-hit:
-    description: 'A boolean value to indicate an exact match was found for the primary key'
+    description: 'A boolean value to indicate an exact match was found for the primary key.'
     value: ${{ steps.cache.outputs.cache-hit }}
 
 runs:
