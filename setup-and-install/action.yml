@@ -1,5 +1,5 @@
-name: 'Setup Java and install dependencies'
-description: 'Setup Java SDK, fetch and cache packages dependencies'
+name: 'Setup Java, build tool and install dependencies'
+description: 'Setup Java SDK, the build tool fetch and cache packages dependencies'
 
 inputs:
   working-directory:
@@ -11,12 +11,15 @@ inputs:
   distribution:
     default: 'corretto'
     description: 'Java Distribution'
+  build-tool:
+    default: 'Maven'
+    description: 'The build tool to use. The options `Maven` and `Gradle` are supported'
   cache:
     default: 'true'
-    description: 'Enable Maven dependency caching.'
+    description: 'Enable Maven/Gradle dependency caching.'
   cache-name:
     default: 'aboutbits-setup-java'
-    description: 'Cache name. Caches with the same name will share their contents.'
+    description: 'Maven cache name. Caches with the same name will share their contents. This is not applicable to Gradle as `gradle/actions/setup-gradle` manages caching for us.'
 
 outputs:
   distribution:
@@ -45,14 +48,28 @@ runs:
     - name: Cache local Maven repository
       uses: actions/cache@v4
       id: cache
-      if: ${{ inputs.cache == 'true' }}
+      if: ${{ inputs.cache == 'true' && inputs.build-tool == 'Maven' }}
       with:
         path: ~/.m2/repository
         key: ${{ inputs.cache-name }}-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ inputs.cache-name }}-${{ runner.os }}-maven-
 
-    - name: Update maven dependencies
+    - name: Update Maven dependencies
       working-directory: ${{ inputs.working-directory }}
+      if: ${{ inputs.build-tool == 'Maven' }}
       run: ./mvnw --batch-mode --fail-fast dependency:resolve dependency:resolve-plugins
+      shell: bash
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      if: ${{ inputs.build-tool == 'Gradle' }}
+      with:
+        cache-disabled: ${{ inputs.cache == 'false' }}
+        cache-read-only: 'false'
+
+    - name: Update project configuration and Gradle dependencies
+      working-directory: ${{ inputs.working-directory }}
+      if: ${{ inputs.build-tool == 'Gradle' }}
+      run: ./gradlew build --dry-run
       shell: bash
