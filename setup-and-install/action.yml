@@ -1,5 +1,5 @@
 name: 'Setup Java, build tool and install dependencies'
-description: 'Setup Java SDK, the build tool fetch and cache packages dependencies'
+description: 'Setup Java SDK, the build tool, fetch and cache packages dependencies'
 
 inputs:
   working-directory:
