@@ -1,5 +1,5 @@
-name: 'Setup Java and install dependencies'
-description: 'Setup Java SDK, fetch and cache packages dependencies'
+name: 'Setup Java, Gradle and install dependencies'
+description: 'Setup Java SDK, Gradle, fetch and cache packages dependencies'
 
 inputs:
   working-directory:
@@ -13,10 +13,7 @@ inputs:
     description: 'Java Distribution'
   cache:
     default: 'true'
-    description: 'Enable Maven dependency caching.'
-  cache-name:
-    default: 'aboutbits-setup-java'
-    description: 'Cache name. Caches with the same name will share their contents.'
+    description: 'Enable Gradle configuration and dependency caching.'
 
 outputs:
   distribution:
@@ -28,9 +25,6 @@ outputs:
   path:
     description: 'Path to where the java environment has been installed (same as $JAVA_HOME).'
     value: ${{ steps.setup-java.outputs.path }}
-  cache-hit:
-    description: 'A boolean value to indicate an exact match was found for the primary key.'
-    value: ${{ steps.cache.outputs.cache-hit }}
 
 runs:
   using: "composite"
@@ -42,17 +36,13 @@ runs:
         java-version: ${{ inputs.java-version }}
         distribution: ${{ inputs.distribution }}
 
-    - name: Cache local Maven repository
-      uses: actions/cache@v4
-      id: cache
-      if: ${{ inputs.cache == 'true' }}
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
       with:
-        path: ~/.m2/repository
-        key: ${{ inputs.cache-name }}-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ inputs.cache-name }}-${{ runner.os }}-maven-
+        cache-disabled: ${{ inputs.cache == 'false' }}
+        cache-read-only: 'false'
 
-    - name: Update maven dependencies
+    - name: Update dependencies
       working-directory: ${{ inputs.working-directory }}
-      run: ./mvnw --batch-mode --fail-fast dependency:resolve dependency:resolve-plugins
+      run: ./gradlew build --dry-run
       shell: bash
