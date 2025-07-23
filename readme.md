@@ -95,7 +95,7 @@ Replacing an already existing minor release:
 
 ```bash
 git tag -d v4
-git push origin :refs/tags/v3
+git push origin :refs/tags/v4
 git tag v4
 git push --tags
 ```
