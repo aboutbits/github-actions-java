@@ -13,7 +13,7 @@ inputs:
     description: 'Java Distribution'
   cache:
     default: 'true'
-    description: 'Enable dependency caching.'
+    description: 'Enable Maven dependency caching.'
   cache-name:
     default: 'aboutbits-setup-java'
     description: 'Cache name. Caches with the same name will share their contents.'

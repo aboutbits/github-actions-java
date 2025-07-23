@@ -25,9 +25,6 @@ outputs:
   path:
     description: 'Path to where the java environment has been installed (same as $JAVA_HOME).'
     value: ${{ steps.setup-java.outputs.path }}
-  cache-hit:
-    description: 'A boolean value to indicate an exact match was found for the primary key.'
-    value: ${{ steps.cache.outputs.cache-hit }}
 
 runs:
   using: "composite"
