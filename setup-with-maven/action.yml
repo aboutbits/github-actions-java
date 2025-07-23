@@ -1,5 +1,5 @@
-name: 'Setup Java and build tool'
-description: 'Setup Java SDK and the build tool'
+name: 'Setup Java'
+description: 'Setup Java SDK'
 
 inputs:
   working-directory:
@@ -11,15 +11,12 @@ inputs:
   distribution:
     default: 'corretto'
     description: 'Java Distribution'
-  build-tool:
-    default: 'Maven'
-    description: 'The build tool to use. The options `Maven` and `Gradle` are supported'
   cache:
     default: 'true'
-    description: 'Enable Maven/Gradle dependency caching.'
+    description: 'Enable dependency caching.'
   cache-name:
     default: 'aboutbits-setup-java'
-    description: 'Maven cache name. Caches with the same name will share their contents. This is not applicable to Gradle as `gradle/actions/setup-gradle` manages caching for us.'
+    description: 'Cache name. Caches with the same name will share their contents.'
 
 outputs:
   distribution:
@@ -48,16 +45,9 @@ runs:
     - name: Cache local Maven repository
       uses: actions/cache@v4
       id: cache
-      if: ${{ inputs.cache == 'true' && inputs.build-tool == 'Maven' }}
+      if: ${{ inputs.cache == 'true' }}
       with:
         path: ~/.m2/repository
         key: ${{ inputs.cache-name }}-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ inputs.cache-name }}-${{ runner.os }}-maven-
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      if: ${{ inputs.build-tool == 'Gradle' }}
-      with:
-        cache-disabled: ${{ inputs.cache == 'false' }}
-        cache-read-only: 'false'

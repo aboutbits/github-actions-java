@@ -1,0 +1,43 @@
+name: 'Setup Java and Gradle'
+description: 'Setup Java SDK and Gradle'
+
+inputs:
+  working-directory:
+    description: 'The working directory'
+    default: '.'
+  java-version:
+    default: '21'
+    description: 'Java Version'
+  distribution:
+    default: 'corretto'
+    description: 'Java Distribution'
+  cache:
+    default: 'true'
+    description: 'Enable Gradle dependency caching.'
+
+outputs:
+  distribution:
+    description: 'Distribution of Java that has been installed.'
+    value: ${{ steps.setup-java.outputs.distribution }}
+  version:
+    description: 'Actual version of the java environment that has been installed.'
+    value: ${{ steps.setup-java.outputs.version }}
+  path:
+    description: 'Path to where the java environment has been installed (same as $JAVA_HOME).'
+    value: ${{ steps.setup-java.outputs.path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      id: setup-java
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: ${{ inputs.distribution }}
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        cache-disabled: ${{ inputs.cache == 'false' }}
+        cache-read-only: 'false'
