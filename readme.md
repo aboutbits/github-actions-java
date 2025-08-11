@@ -79,6 +79,12 @@ The following outputs are forwarded from the underlying `setup-java` and `cache`
 | `path`         | Path to where the java environment has been installed (same as $JAVA_HOME).                                    |
 | `cache-hit`    | A boolean value to indicate an exact match was found for the primary key. (Not applicable when Gradle is used) |
 
+## Gradle configuration cache
+
+To enable the Gradle configuration cache, which further improves the build performance, a secret called `GRADLE_ENCRYPTION_KEY` must exist.
+If the secret does not exist, Gradle will still work, but the configuration cache will not be saved.
+https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
+
 ## Versioning
 
 In order to have a versioning in place and working, create lightweight tags that point to the appropriate minor release
