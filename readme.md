@@ -81,7 +81,7 @@ The following outputs are forwarded from the underlying `setup-java` and `cache`
 
 ## Gradle configuration cache
 
-To enable the Gradle configuration cache, which further improves the build performance, a secret called `GRADLE_ENCRYPTION_KEY` must exist.
+To enable the Gradle configuration cache, which further improves the build performance in addition to the default enabled wrapper/script/dependency/build cache, a GitHub secret called `GRADLE_ENCRYPTION_KEY` must exist.
 If the secret does not exist, Gradle will still work, but the configuration cache will not be saved.
 https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
 
