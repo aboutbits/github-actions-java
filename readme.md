@@ -22,13 +22,14 @@ This action will set up the Java SDK.
 
 The following inputs can be used as `step.with` keys:
 
-| Name                | Required/Default       | Description                                                                                           |
-|---------------------|------------------------|-------------------------------------------------------------------------------------------------------|
-| `working-directory` | `.`                    | The working directory                                                                                 |
-| `java-version`      | `21`                   | Java Version                                                                                          |
-| `distribution`      | `corretto`             | Java Distribution                                                                                     |
-| `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
-| `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
+| Name                   | Required/Default       | Description                                                                                           |
+|------------------------|------------------------|-------------------------------------------------------------------------------------------------------|
+| `working-directory`    | `.`                    | The working directory                                                                                 |
+| `java-version`         | `21`                   | Java Version                                                                                          |
+| `distribution`         | `corretto`             | Java Distribution                                                                                     |
+| `cache`                | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
+| `cache-name`           | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
+| `cache-encryption-key` |                        | Optional encryption key for the Gradle configuration cache. (Not applicable when Maven is used)       |
 
 #### Outputs
 
@@ -60,13 +61,14 @@ You can choose between the Maven and Gradle build tool.
 
 The following inputs can be used as `step.with` keys:
 
-| Name                | Required/Default       | Description                                                                                           |
-|---------------------|------------------------|-------------------------------------------------------------------------------------------------------|
-| `working-directory` | `.`                    | The working directory                                                                                 |
-| `java-version`      | `21`                   | Java Version                                                                                          |
-| `distribution`      | `corretto`             | Java Distribution                                                                                     |
-| `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
-| `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
+| Name                   | Required/Default       | Description                                                                                           |
+|------------------------|------------------------|-------------------------------------------------------------------------------------------------------|
+| `working-directory`    | `.`                    | The working directory                                                                                 |
+| `java-version`         | `21`                   | Java Version                                                                                          |
+| `distribution`         | `corretto`             | Java Distribution                                                                                     |
+| `cache`                | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
+| `cache-name`           | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
+| `cache-encryption-key` |                        | Optional encryption key for the Gradle configuration cache. (Not applicable when Maven is used)       |
 
 #### Outputs
 
@@ -81,8 +83,10 @@ The following outputs are forwarded from the underlying `setup-java` and `cache`
 
 ## Gradle configuration cache
 
-To enable the Gradle configuration cache, which further improves the build performance in addition to the default enabled wrapper/script/dependency/build cache, a GitHub secret called `GRADLE_ENCRYPTION_KEY` must exist.
-If the secret does not exist, Gradle will still work, but the configuration cache will not be saved.
+To enable the Gradle configuration cache, which further improves the build performance in addition to the default
+enabled wrapper/script/dependency/build cache, create a GitHub secret called `GRADLE_ENCRYPTION_KEY` and pass it to the
+`cache-encryption-key` input.
+If you do not specify `cache-encryption-key`, Gradle will still work, but the configuration cache will not be saved.
 https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
 
 ## Versioning
