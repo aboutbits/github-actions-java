@@ -13,7 +13,10 @@ inputs:
     description: 'Java Distribution'
   cache:
     default: 'true'
-    description: 'Enable Gradle dependency caching.'
+    description: 'Enable Gradle configuration and dependency caching.'
+  cache-encryption-key:
+    description: 'Optional encryption key for the Gradle configuration cache'
+    required: false
 
 outputs:
   distribution:
@@ -40,5 +43,5 @@ runs:
       uses: gradle/actions/setup-gradle@v4
       with:
         cache-disabled: ${{ inputs.cache == 'false' }}
-        cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+        cache-encryption-key: ${{ inputs.cache-encryption-key }}
         cache-read-only: 'false'
