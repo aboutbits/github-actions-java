@@ -6,31 +6,22 @@ inputs:
     description: 'The working directory'
     default: '.'
   java-version:
-    default: '21'
     description: 'Java Version'
+    default: '21'
   distribution:
-    default: 'corretto'
     description: 'Java Distribution'
+    default: 'corretto'
   cache:
-    default: 'true'
     description: 'Enable Maven dependency caching.'
+    default: 'true'
   cache-name:
-    default: 'aboutbits-setup-java'
     description: 'Cache name. Caches with the same name will share their contents.'
+    default: 'aboutbits-setup-java'
 
 outputs:
-  distribution:
-    description: 'Distribution of Java that has been installed.'
-    value: ${{ steps.setup-java.outputs.distribution }}
-  version:
-    description: 'Actual version of the java environment that has been installed.'
-    value: ${{ steps.setup-java.outputs.version }}
   path:
     description: 'Path to where the java environment has been installed (same as $JAVA_HOME).'
     value: ${{ steps.setup-java.outputs.path }}
-  cache-hit:
-    description: 'A boolean value to indicate an exact match was found for the primary key.'
-    value: ${{ steps.cache.outputs.cache-hit }}
 
 runs:
   using: "composite"
@@ -41,7 +32,6 @@ runs:
       with:
         java-version: ${{ inputs.java-version }}
         distribution: ${{ inputs.distribution }}
-
     - name: Cache local Maven repository
       uses: actions/cache@v4
       id: cache
@@ -50,4 +40,4 @@ runs:
         path: ~/.m2/repository
         key: ${{ inputs.cache-name }}-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ inputs.cache-name }}-${{ runner.os }}-maven-
+          ${{ inputs.cache-name }}-${{ runner.os }}-maven

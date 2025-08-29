@@ -1,0 +1,20 @@
+name: 'Set version in pom.xml'
+
+inputs:
+  working-directory:
+    description: 'The working directory'
+    default: '.'
+  version:
+    description: 'The version'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install xmlstarlet
+      run: sudo apt-get install -y xmlstarlet
+      shell: bash
+    - name: Set version of pom.xml file
+      working-directory: ${{ inputs.working-directory }}
+      run: xmlstarlet ed -P -L -u "/_:project/_:version" -v "${{ inputs.version }}" pom.xml
+      shell: bash

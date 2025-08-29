@@ -4,17 +4,44 @@ A collection of GitHub actions for Java projects with Maven and Gradle support.
 
 ## Actions
 
-### Setup Java
+### Setup Java with Maven
 
-This action will set up the Java SDK.
+This action will set up the Java SDK including Maven.
 
 #### Example:
 
 ```yaml
-  # Maven
   - uses: aboutbits/github-actions-java/setup-with-maven@v4
+```
 
-  # Gradle
+#### Inputs
+
+The following inputs can be used as `step.with` keys:
+
+| Name                | Required/Default       | Description                                                      |
+|---------------------|------------------------|------------------------------------------------------------------|
+| `working-directory` | `.`                    | The working directory                                            |
+| `java-version`      | `21`                   | Java Version                                                     |
+| `distribution`      | `corretto`             | Java Distribution                                                |
+| `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                          |
+| `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. |
+
+#### Outputs
+
+The following outputs are forwarded from the underlying `setup-java` and `cache` actions:
+
+| Name   | Description                                                                 |
+|--------|-----------------------------------------------------------------------------|
+| `path` | Path to where the java environment has been installed (same as $JAVA_HOME). |
+
+
+### Setup Java with Gradle
+
+This action will set up the Java SDK including Gradle.
+
+#### Example:
+
+```yaml
   - uses: aboutbits/github-actions-java/setup-with-gradle@v4
 ```
 
@@ -22,38 +49,59 @@ This action will set up the Java SDK.
 
 The following inputs can be used as `step.with` keys:
 
-| Name                   | Required/Default       | Description                                                                                           |
-|------------------------|------------------------|-------------------------------------------------------------------------------------------------------|
-| `working-directory`    | `.`                    | The working directory                                                                                 |
-| `java-version`         | `21`                   | Java Version                                                                                          |
-| `distribution`         | `corretto`             | Java Distribution                                                                                     |
-| `cache`                | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
-| `cache-name`           | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
-| `cache-encryption-key` |                        | Optional encryption key for the Gradle configuration cache. (Not applicable when Maven is used)       |
+| Name                   | Required/Default | Description                                                 |
+|------------------------|------------------|-------------------------------------------------------------|
+| `working-directory`    | `.`              | The working directory                                       |
+| `java-version`         | `21`             | Java Version                                                |
+| `distribution`         | `corretto`       | Java Distribution                                           |
+| `cache`                | `true`           | Enable Maven/Gradle dependency caching.                     |
+| `cache-encryption-key` |                  | Optional encryption key for the Gradle configuration cache. |
 
 #### Outputs
 
 The following outputs are forwarded from the underlying `setup-java` and `cache` actions:
 
-| Name           | Description                                                                                                    |
-|----------------|----------------------------------------------------------------------------------------------------------------|
-| `distribution` | Distribution of Java that has been installed.                                                                  |
-| `version`      | Actual version of the java environment that has been installed.                                                |
-| `path`         | Path to where the java environment has been installed (same as $JAVA_HOME).                                    |
-| `cache-hit`    | A boolean value to indicate an exact match was found for the primary key. (Not applicable when Gradle is used) |
+| Name   | Description                                                                 |
+|--------|-----------------------------------------------------------------------------|
+| `path` | Path to where the java environment has been installed (same as $JAVA_HOME). |
 
-### Setup Java and Install Dependencies
+### Setup Java and Install Dependencies with Maven
 
-This action will set up the Java SDK and install all dependencies.
-You can choose between the Maven and Gradle build tool.
+This action will set up the Java SDK and install all dependencies using Maven.
 
 #### Example:
 
 ```yaml
-  # Maven
   - uses: aboutbits/github-actions-java/setup-and-install-with-maven@v4
+```
 
-  # Gradle
+#### Inputs
+
+The following inputs can be used as `step.with` keys:
+
+| Name                | Required/Default       | Description                                                      |
+|---------------------|------------------------|------------------------------------------------------------------|
+| `working-directory` | `.`                    | The working directory                                            |
+| `java-version`      | `21`                   | Java Version                                                     |
+| `distribution`      | `corretto`             | Java Distribution                                                |
+| `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                          |
+| `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. |
+
+#### Outputs
+
+The following outputs are forwarded from the underlying `setup-java` and `cache` actions:
+
+| Name   | Description                                                                 |
+|--------|-----------------------------------------------------------------------------|
+| `path` | Path to where the java environment has been installed (same as $JAVA_HOME). |
+
+### Setup Java and Install Dependencies with Gradle
+
+This action will set up the Java SDK and install all dependencies using Gradle.
+
+#### Example:
+
+```yaml
   - uses: aboutbits/github-actions-java/setup-and-install-with-gradle@v4
 ```
 
@@ -61,38 +109,50 @@ You can choose between the Maven and Gradle build tool.
 
 The following inputs can be used as `step.with` keys:
 
-| Name                   | Required/Default       | Description                                                                                           |
-|------------------------|------------------------|-------------------------------------------------------------------------------------------------------|
-| `working-directory`    | `.`                    | The working directory                                                                                 |
-| `java-version`         | `21`                   | Java Version                                                                                          |
-| `distribution`         | `corretto`             | Java Distribution                                                                                     |
-| `cache`                | `true`                 | Enable Maven/Gradle dependency caching.                                                               |
-| `cache-name`           | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. (Not applicable when Gradle is used) |
-| `cache-encryption-key` |                        | Optional encryption key for the Gradle configuration cache. (Not applicable when Maven is used)       |
+| Name                   | Required/Default | Description                                                 |
+|------------------------|------------------|-------------------------------------------------------------|
+| `working-directory`    | `.`              | The working directory                                       |
+| `java-version`         | `21`             | Java Version                                                |
+| `distribution`         | `corretto`       | Java Distribution                                           |
+| `cache`                | `true`           | Enable Maven/Gradle dependency caching.                     |
+| `cache-encryption-key` |                  | Optional encryption key for the Gradle configuration cache. |
 
 #### Outputs
 
 The following outputs are forwarded from the underlying `setup-java` and `cache` actions:
 
-| Name           | Description                                                                                                    |
-|----------------|----------------------------------------------------------------------------------------------------------------|
-| `distribution` | Distribution of Java that has been installed.                                                                  |
-| `version`      | Actual version of the java environment that has been installed.                                                |
-| `path`         | Path to where the java environment has been installed (same as $JAVA_HOME).                                    |
-| `cache-hit`    | A boolean value to indicate an exact match was found for the primary key. (Not applicable when Gradle is used) |
+| Name    | Description                                                                 |
+|---------|-----------------------------------------------------------------------------|
+| `path`  | Path to where the java environment has been installed (same as $JAVA_HOME). |
 
-## Gradle configuration cache
+### Set Version with Maven
 
-To enable the Gradle configuration cache, which further improves the build performance in addition to the default
-enabled wrapper/script/dependency/build cache, create a GitHub secret called `GRADLE_ENCRYPTION_KEY` and pass it to the
-`cache-encryption-key` input.
+This action will set the given version in a pom.xml file.
+
+#### Example:
+
+```yaml
+  - uses: aboutbits/github-actions-java/set-version-with-maven@v4
+```
+
+#### Inputs
+
+The following inputs can be used as `step.with` keys:
+
+| Name                   | Required/Default | Description           |
+|------------------------|------------------|-----------------------|
+| `working-directory`    | `.`              | The working directory |
+| `version`              | Required         | Package version       |
+
+## Gradle cache configuration
+
+To enable the Gradle configuration cache, which further improves the build performance in addition to the default enabled wrapper/script/dependency/build cache, pass a secret to the `cache-encryption-key` input.
 If you do not specify `cache-encryption-key`, Gradle will still work, but the configuration cache will not be saved.
 https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
 
 ## Versioning
 
-In order to have a versioning in place and working, create lightweight tags that point to the appropriate minor release
-versions.
+In order to have a versioning in place and working, create lightweight tags that point to the appropriate minor release versions.
 
 Creating a new minor release:
 
