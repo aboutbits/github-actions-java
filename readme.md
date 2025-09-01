@@ -152,7 +152,7 @@ https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configur
 
 ## Build & Publish
 
-To build and publish the chart, visit the GitHub Actions page of the repository and trigger the workflow "Release Package" manually.
+To build and publish the action, visit the GitHub Actions page of the repository and trigger the workflow "Release Package" manually.
 
 ## Information
 
