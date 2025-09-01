@@ -150,25 +150,9 @@ To enable the Gradle configuration cache, which further improves the build perfo
 If you do not specify `cache-encryption-key`, Gradle will still work, but the configuration cache will not be saved.
 https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
 
-## Versioning
+## Build & Publish
 
-In order to have a versioning in place and working, create lightweight tags that point to the appropriate minor release versions.
-
-Creating a new minor release:
-
-```bash
-git tag v4
-git push --tags
-```
-
-Replacing an already existing minor release:
-
-```bash
-git tag -d v4
-git push origin :refs/tags/v4
-git tag v4
-git push --tags
-```
+To build and publish the chart, visit the GitHub Actions page of the repository and trigger the workflow "Release Package" manually.
 
 ## Information
 
