@@ -11,7 +11,7 @@ This action will set up the Java SDK including Maven.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup-with-maven@v4
+  - uses: aboutbits/github-actions-java/setup-with-maven@v5
 ```
 
 #### Inputs
@@ -42,7 +42,7 @@ This action will set up the Java SDK including Gradle.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup-with-gradle@v4
+  - uses: aboutbits/github-actions-java/setup-with-gradle@v5
 ```
 
 #### Inputs
@@ -72,7 +72,7 @@ This action will set up the Java SDK and install all dependencies using Maven.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup-and-install-with-maven@v4
+  - uses: aboutbits/github-actions-java/setup-and-install-with-maven@v5
 ```
 
 #### Inputs
@@ -102,7 +102,7 @@ This action will set up the Java SDK and install all dependencies using Gradle.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/setup-and-install-with-gradle@v4
+  - uses: aboutbits/github-actions-java/setup-and-install-with-gradle@v5
 ```
 
 #### Inputs
@@ -132,7 +132,7 @@ This action will set the given version in a pom.xml file.
 #### Example:
 
 ```yaml
-  - uses: aboutbits/github-actions-java/set-version-with-maven@v4
+  - uses: aboutbits/github-actions-java/set-version-with-maven@v5
 ```
 
 #### Inputs
