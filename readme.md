@@ -21,7 +21,7 @@ The following inputs can be used as `step.with` keys:
 | Name                | Required/Default       | Description                                                      |
 |---------------------|------------------------|------------------------------------------------------------------|
 | `working-directory` | `.`                    | The working directory                                            |
-| `java-version`      | `21`                   | Java Version                                                     |
+| `java-version`      | `25`                   | Java Version                                                     |
 | `distribution`      | `corretto`             | Java Distribution                                                |
 | `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                          |
 | `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. |
@@ -52,7 +52,7 @@ The following inputs can be used as `step.with` keys:
 | Name                   | Required/Default | Description                                                 |
 |------------------------|------------------|-------------------------------------------------------------|
 | `working-directory`    | `.`              | The working directory                                       |
-| `java-version`         | `21`             | Java Version                                                |
+| `java-version`         | `25`             | Java Version                                                |
 | `distribution`         | `corretto`       | Java Distribution                                           |
 | `cache`                | `true`           | Enable Maven/Gradle dependency caching.                     |
 | `cache-encryption-key` |                  | Optional encryption key for the Gradle configuration cache. |
@@ -82,7 +82,7 @@ The following inputs can be used as `step.with` keys:
 | Name                | Required/Default       | Description                                                      |
 |---------------------|------------------------|------------------------------------------------------------------|
 | `working-directory` | `.`                    | The working directory                                            |
-| `java-version`      | `21`                   | Java Version                                                     |
+| `java-version`      | `25`                   | Java Version                                                     |
 | `distribution`      | `corretto`             | Java Distribution                                                |
 | `cache`             | `true`                 | Enable Maven/Gradle dependency caching.                          |
 | `cache-name`        | `aboutbits-setup-java` | Cache name. Caches with the same name will share their contents. |
@@ -112,7 +112,7 @@ The following inputs can be used as `step.with` keys:
 | Name                   | Required/Default | Description                                                 |
 |------------------------|------------------|-------------------------------------------------------------|
 | `working-directory`    | `.`              | The working directory                                       |
-| `java-version`         | `21`             | Java Version                                                |
+| `java-version`         | `25`             | Java Version                                                |
 | `distribution`         | `corretto`       | Java Distribution                                           |
 | `cache`                | `true`           | Enable Maven/Gradle dependency caching.                     |
 | `cache-encryption-key` |                  | Optional encryption key for the Gradle configuration cache. |
@@ -160,7 +160,6 @@ jobs:
       - uses: actions/checkout@v7
       - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
         with:
-          java-version: 25
           project-type: spring-boot
 ```
 
@@ -171,7 +170,7 @@ The following inputs can be used as `step.with` keys:
 | Name                     | Required/Default | Description                                                                     |
 |--------------------------|------------------|---------------------------------------------------------------------------------|
 | `working-directory`      | `.`              | The working directory                                                           |
-| `java-version`           | `21`             | Java Version                                                                    |
+| `java-version`           | `25`             | Java Version                                                                    |
 | `distribution`           | `corretto`       | Java Distribution                                                               |
 | `project-type`           | Required         | `spring-boot` or `quarkus`. Selects the configuration filter and runtime scope. |
 | `runtime-configurations` |                  | Optional regex that replaces the runtime configurations of the project type.    |

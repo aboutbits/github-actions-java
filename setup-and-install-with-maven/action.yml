@@ -7,7 +7,7 @@ inputs:
     default: '.'
   java-version:
     description: 'Java Version'
-    default: '21'
+    default: '25'
   distribution:
     description: 'Java Distribution'
     default: 'corretto'
