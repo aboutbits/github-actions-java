@@ -1,0 +1,66 @@
+name: 'Submit Gradle dependency graph'
+description: 'Setup Java SDK, generate the Gradle dependency graph and submit it to GitHub'
+
+inputs:
+  working-directory:
+    description: 'The working directory'
+    default: '.'
+  java-version:
+    description: 'Java Version'
+    default: '21'
+  distribution:
+    description: 'Java Distribution'
+    default: 'corretto'
+  project-type:
+    description: 'Project type that selects the configuration filter and the runtime scope: spring-boot or quarkus'
+    required: true
+  runtime-configurations:
+    description: 'Optional regex that replaces the runtime configurations of the project type'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Select dependency graph settings
+      id: settings
+      shell: bash
+      env:
+        PROJECT_TYPE: ${{ inputs.project-type }}
+        RUNTIME_CONFIGURATIONS: ${{ inputs.runtime-configurations }}
+      run: |
+        case "$PROJECT_TYPE" in
+          spring-boot)
+            # The Spring dependency management plugin resolves detached copies of each configuration.
+            # The copies can contain other versions than the real classpath, for example the version from the Spring Boot BOM.
+            exclude_configurations='detachedConfiguration.*'
+            runtime_configurations='runtimeClasspath|productionRuntimeClasspath'
+            ;;
+          quarkus)
+            exclude_configurations=''
+            runtime_configurations='runtimeClasspath|quarkusProdRuntimeClasspathConfiguration'
+            ;;
+          *)
+            echo "::error::Unknown project-type '$PROJECT_TYPE'. Use spring-boot or quarkus."
+            exit 1
+            ;;
+        esac
+        if [ -n "$RUNTIME_CONFIGURATIONS" ]; then
+          runtime_configurations="$RUNTIME_CONFIGURATIONS"
+        fi
+        echo "exclude-configurations=$exclude_configurations" >> "$GITHUB_OUTPUT"
+        echo "runtime-configurations=$runtime_configurations" >> "$GITHUB_OUTPUT"
+    - name: Set up JDK
+      uses: actions/setup-java@v6
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: ${{ inputs.distribution }}
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@v6
+      env:
+        # Dependencies that only other configurations resolve get the scope "development"
+        DEPENDENCY_GRAPH_RUNTIME_INCLUDE_CONFIGURATIONS: ${{ steps.settings.outputs.runtime-configurations }}
+      with:
+        build-root-directory: ${{ inputs.working-directory }}
+        dependency-graph-exclude-configurations: ${{ steps.settings.outputs.exclude-configurations }}
+        # The job has contents: write, so stop it if a Gradle wrapper JAR is not an official release
+        validate-wrappers: 'true'
