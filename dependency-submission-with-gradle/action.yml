@@ -17,6 +17,9 @@ inputs:
   runtime-configurations:
     description: 'Optional regex that replaces the runtime configurations of the project type'
     required: false
+  runtime-exclude-projects:
+    description: 'Optional regex of Gradle project paths whose dependencies never get the scope "runtime", for example the projects of an included build-logic build'
+    required: false
 
 runs:
   using: "composite"
@@ -59,6 +62,8 @@ runs:
       env:
         # Dependencies that only other configurations resolve get the scope "development"
         DEPENDENCY_GRAPH_RUNTIME_INCLUDE_CONFIGURATIONS: ${{ steps.settings.outputs.runtime-configurations }}
+        # Empty means no project is excluded
+        DEPENDENCY_GRAPH_RUNTIME_EXCLUDE_PROJECTS: ${{ inputs.runtime-exclude-projects }}
       with:
         build-root-directory: ${{ inputs.working-directory }}
         dependency-graph-exclude-configurations: ${{ steps.settings.outputs.exclude-configurations }}

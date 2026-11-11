@@ -167,13 +167,14 @@ jobs:
 
 The following inputs can be used as `step.with` keys:
 
-| Name                     | Required/Default | Description                                                                     |
-|--------------------------|------------------|---------------------------------------------------------------------------------|
-| `working-directory`      | `.`              | The working directory                                                           |
-| `java-version`           | `25`             | Java Version                                                                    |
-| `distribution`           | `corretto`       | Java Distribution                                                               |
-| `project-type`           | Required         | `spring-boot` or `quarkus`. Selects the configuration filter and runtime scope. |
-| `runtime-configurations` |                  | Optional regex that replaces the runtime configurations of the project type.    |
+| Name                       | Required/Default | Description                                                                              |
+|----------------------------|------------------|------------------------------------------------------------------------------------------|
+| `working-directory`        | `.`              | The working directory                                                                    |
+| `java-version`             | `25`             | Java Version                                                                             |
+| `distribution`             | `corretto`       | Java Distribution                                                                        |
+| `project-type`             | Required         | `spring-boot` or `quarkus`. Selects the configuration filter and runtime scope.          |
+| `runtime-configurations`   |                  | Optional regex that replaces the runtime configurations of the project type.             |
+| `runtime-exclude-projects` |                  | Optional regex of Gradle project paths whose dependencies never get the scope "runtime". |
 
 #### Project types
 
@@ -186,6 +187,17 @@ The project type sets which Gradle configurations go into the dependency graph, 
 
 - `spring-boot`: The Spring dependency management plugin resolves detached copies of each configuration. These copies can contain other versions than the real classpath, for example the version from the Spring Boot BOM. Without the filter, Dependabot reports alerts for versions that the application does not use.
 - `quarkus`: The action uses no filter. Dependencies that only the build-time configurations of Quarkus resolve, for example the deployment modules of the extensions, get the scope "development".
+
+#### Included build-logic builds
+
+The dependency graph also contains the builds that `settings.gradle.kts` includes with `includeBuild`, for example a build with a custom Gradle convention plugin for the jOOQ code generation. The runtime configurations match by name in every project, so the dependencies of such a build get the scope "runtime", although the application does not contain them. Set `runtime-exclude-projects` to the project paths of that build. The dependencies stay in the dependency graph with the scope "development".
+
+```yaml
+      - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
+        with:
+          project-type: spring-boot
+          runtime-exclude-projects: ':jooq(:.*)?'
+```
 
 ### Set Version with Maven
 
