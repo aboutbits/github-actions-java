@@ -157,7 +157,7 @@ jobs:
   dependency-submission:
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
       - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
         with:
           project-type: spring-boot
