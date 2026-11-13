@@ -135,16 +135,28 @@ The action resolves all dependencies of the build. It does not build or test the
 
 The workflow must have the `contents: write` permission to submit the dependency graph.
 
-GitHub compares new advisories with the last submitted dependency graph, so the workflow must run only after the dependencies change. The example runs once on each weekday morning. For a project in maintenance mode, a weekly run is enough, for example `'17 5 * * 1'`. Use the manual trigger to submit the graph at once, for example after you add the workflow or update a vulnerable dependency.
+GitHub compares new advisories with the last submitted dependency graph, so the workflow must run only after the dependencies change. The example runs on a push to `main` that changes a file that can change the resolved dependencies or the Gradle version. Use the manual trigger to submit the graph at once, for example after a new release of this action.
 
 ```yaml
 name: Dependency Submission
 
 on:
-  schedule:
-    # 05:17 UTC on weekdays. An odd minute, because GitHub can delay runs at the full hour.
-    - cron: '17 5 * * 1-5'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.gradle'
+      - '**/*.gradle.kts'
+      - '**/gradle.properties'
+      - '**/*.versions.toml'
+      - '**/*.lockfile'
+      - 'buildSrc/**'
+      - 'gradle/wrapper/gradle-wrapper.properties'
+      - '.github/workflows/dependency-submission.yml'
   workflow_dispatch:
+
+env:
+  JAVA_VERSION: 25
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -156,11 +168,37 @@ permissions:
 jobs:
   dependency-submission:
     runs-on: ubuntu-26.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
         with:
+          java-version: ${{ env.JAVA_VERSION }}
           project-type: spring-boot
+```
+
+The paths list covers `buildSrc`. When `settings.gradle.kts` includes another build with `includeBuild`, add the sources of that build too, for example `'build-logic/**'`: a convention plugin class can change the resolved dependencies. When the build is in a `working-directory`, put that folder in front of the Gradle wrapper path.
+
+The action runs Gradle in its own step. When the build needs credentials, for example for GitHub Packages, set the variables that your build reads in the `env` of the action step, not of the job. The step environment reaches the Gradle run, and the other steps do not get the credentials. GitHub Packages also needs the `packages: read` permission.
+
+The token in this job has `contents: write`. Every build script and Gradle plugin that the dependency resolution runs can read the variables of the step. So prefer a token that can only read packages, for example a secret with a token that has only the `read:packages` scope. With `secrets.GITHUB_TOKEN`, the build gets the write permission of the job.
+
+```yaml
+permissions:
+  contents: write
+  packages: read
+
+# ...
+
+      - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          project-type: spring-boot
+        env:
+          GITHUB_USER_NAME: ${{ github.actor }}
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 #### Inputs
@@ -191,13 +229,16 @@ The project type sets which Gradle configurations go into the dependency graph, 
 
 #### Included build-logic builds
 
-The dependency graph also contains the builds that `settings.gradle.kts` includes with `includeBuild`, for example a build with a custom Gradle convention plugin for the jOOQ code generation. The runtime configurations match by name in every project, so the dependencies of such a build get the scope "runtime", although the application does not contain them. Set `runtime-exclude-projects` to the project paths of that build. The dependencies stay in the dependency graph with the scope "development".
+The dependency graph also contains the builds that `settings.gradle.kts` includes with `includeBuild`, for example a build with a custom Gradle convention plugin for the jOOQ code generation. The runtime configurations match by name in every project of the graph.
+
+- `spring-boot`: No `productionRuntimeClasspath` of the application contains a build-logic build, so its dependencies get the scope "development" without more settings.
+- `quarkus`, or your own `runtime-configurations` that a build-logic build also has, for example `runtimeClasspath`: the dependencies of that build get the scope "runtime", although the application does not contain them. Set `runtime-exclude-projects` to the project paths of that build. The dependencies stay in the dependency graph with the scope "development".
 
 ```yaml
       - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
         with:
-          project-type: spring-boot
-          runtime-exclude-projects: ':jooq(:.*)?'
+          project-type: quarkus
+          runtime-exclude-projects: ':build-logic(:.*)?'
 ```
 
 ### Set Version with Maven
