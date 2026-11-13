@@ -179,9 +179,19 @@ jobs:
           project-type: spring-boot
 ```
 
-The action runs Gradle in its own step. When the build needs credentials, for example for GitHub Packages, set them in the `env` of the action step, not of the job. The step environment reaches the Gradle run, and the other steps do not get the credentials. GitHub Packages also needs the `packages: read` permission.
+The paths list covers `buildSrc`. When `settings.gradle.kts` includes another build with `includeBuild`, add the sources of that build too, for example `'build-logic/**'`: a convention plugin class can change the resolved dependencies. When the build is in a `working-directory`, put that folder in front of the Gradle wrapper path.
+
+The action runs Gradle in its own step. When the build needs credentials, for example for GitHub Packages, set the variables that your build reads in the `env` of the action step, not of the job. The step environment reaches the Gradle run, and the other steps do not get the credentials. GitHub Packages also needs the `packages: read` permission.
+
+The token in this job has `contents: write`. Every build script and Gradle plugin that the dependency resolution runs can read the variables of the step. So prefer a token that can only read packages, for example a secret with a token that has only the `read:packages` scope. With `secrets.GITHUB_TOKEN`, the build gets the write permission of the job.
 
 ```yaml
+permissions:
+  contents: write
+  packages: read
+
+# ...
+
       - uses: aboutbits/github-actions-java/dependency-submission-with-gradle@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -221,7 +231,7 @@ The project type sets which Gradle configurations go into the dependency graph, 
 
 The dependency graph also contains the builds that `settings.gradle.kts` includes with `includeBuild`, for example a build with a custom Gradle convention plugin for the jOOQ code generation. The runtime configurations match by name in every project of the graph.
 
-- `spring-boot`: A build-logic build does not apply the Spring Boot plugin, so it has no `productionRuntimeClasspath`. Its dependencies get the scope "development" without more settings.
+- `spring-boot`: No `productionRuntimeClasspath` of the application contains a build-logic build, so its dependencies get the scope "development" without more settings.
 - `quarkus`, or your own `runtime-configurations` that a build-logic build also has, for example `runtimeClasspath`: the dependencies of that build get the scope "runtime", although the application does not contain them. Set `runtime-exclude-projects` to the project paths of that build. The dependencies stay in the dependency graph with the scope "development".
 
 ```yaml
