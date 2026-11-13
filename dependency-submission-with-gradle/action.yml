@@ -36,7 +36,9 @@ runs:
             # The Spring dependency management plugin resolves detached copies of each configuration.
             # The copies can contain other versions than the real classpath, for example the version from the Spring Boot BOM.
             exclude_configurations='detachedConfiguration.*'
-            runtime_configurations='runtimeClasspath|productionRuntimeClasspath'
+            # The Spring Boot plugin adds developmentOnly to runtimeClasspath, but not to productionRuntimeClasspath,
+            # which is the classpath of the boot JAR.
+            runtime_configurations='productionRuntimeClasspath'
             ;;
           quarkus)
             exclude_configurations=''

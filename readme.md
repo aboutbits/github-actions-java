@@ -180,12 +180,13 @@ The following inputs can be used as `step.with` keys:
 
 The project type sets which Gradle configurations go into the dependency graph, and which dependencies get the scope "runtime". All other dependencies get the scope "development".
 
-| Project type  | Excluded configurations    | Runtime configurations                                     |
-|---------------|----------------------------|------------------------------------------------------------|
-| `spring-boot` | `detachedConfiguration.*`  | `runtimeClasspath\|productionRuntimeClasspath`              |
-| `quarkus`     | None                       | `runtimeClasspath\|quarkusProdRuntimeClasspathConfiguration` |
+| Project type  | Excluded configurations   | Runtime configurations                                       |
+|---------------|---------------------------|--------------------------------------------------------------|
+| `spring-boot` | `detachedConfiguration.*` | `productionRuntimeClasspath`                                 |
+| `quarkus`     | None                      | `runtimeClasspath\|quarkusProdRuntimeClasspathConfiguration` |
 
 - `spring-boot`: The Spring dependency management plugin resolves detached copies of each configuration. These copies can contain other versions than the real classpath, for example the version from the Spring Boot BOM. Without the filter, Dependabot reports alerts for versions that the application does not use.
+- `spring-boot`: Only `productionRuntimeClasspath`, the classpath of the boot JAR, gives the scope "runtime". The Spring Boot plugin adds `developmentOnly` and `testAndDevelopmentOnly` to `runtimeClasspath`, so those dependencies get the scope "development". A module without the Spring Boot plugin has no `productionRuntimeClasspath`; its dependencies get the scope "runtime" when the application module depends on it.
 - `quarkus`: The action uses no filter. Dependencies that only the build-time configurations of Quarkus resolve, for example the deployment modules of the extensions, get the scope "development".
 
 #### Included build-logic builds
