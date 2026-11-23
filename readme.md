@@ -225,6 +225,15 @@ To enable the Gradle configuration cache, which further improves the build perfo
 If you do not specify `cache-encryption-key`, Gradle will still work, but the configuration cache will not be saved.
 https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
 
+## Java problem matcher
+
+All actions that set up Java enable the Java problem matcher of `actions/setup-java` with `problem-matcher: true`.
+Since `actions/setup-java` v6.3.0, the problem matcher is off by default.
+With the problem matcher, GitHub shows compiler errors, compiler warnings, and uncaught exceptions as annotations directly on the lines of the pull request diff.
+Reviewers see a problem where it occurs, without searching the build log.
+GitHub shows at most 10 errors and 10 warnings per step as annotations. The build log still contains the full compiler output.
+https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#java-problem-matcher-compiler-annotations
+
 ## Build & Publish
 
 To build and publish the action, visit the GitHub Actions page of the repository and trigger the workflow "Release Package" manually.
