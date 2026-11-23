@@ -227,7 +227,7 @@ https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configur
 
 ## Java problem matcher
 
-All actions enable the Java problem matcher of `actions/setup-java` with `problem-matcher: true`.
+All actions that set up Java enable the Java problem matcher of `actions/setup-java` with `problem-matcher: true`.
 Since `actions/setup-java` v6.3.0, the problem matcher is off by default.
 With the problem matcher, GitHub shows compiler errors, compiler warnings, and uncaught exceptions as annotations directly on the lines of the pull request diff.
 Reviewers see a problem where it occurs, without searching the build log.
