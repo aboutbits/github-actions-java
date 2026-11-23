@@ -35,6 +35,7 @@ runs:
       with:
         java-version: ${{ inputs.java-version }}
         distribution: ${{ inputs.distribution }}
+        problem-matcher: true
     - name: Cache local Maven repository
       uses: actions/cache@v6
       id: cache
